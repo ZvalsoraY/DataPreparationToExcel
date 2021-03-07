@@ -7,9 +7,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-//using NPOI.SS.UserModel;
-//using BorderStyle = NPOI.SS.UserModel.BorderStyle;
-//using HorizontalAlignment = NPOI.SS.UserModel.HorizontalAlignment;
 using NPOI.SS.UserModel.Charts;
 
 namespace DataPreparationToExcel
@@ -42,15 +39,22 @@ namespace DataPreparationToExcel
         {
             foreach(var inputFileName in list)
             {
-                List<List<double>> fileDataList = FileDoubleArrayList(inputFileName);
-                CreateExcel(sortByY(selectCoordZ(fileDataList)), inputFileName);
+                var doubleArrayListData = FileDoubleArrayList(inputFileName);
+                List<List<double>> fileDataList = doubleArrayListData.Item1;
+                foreach(var filterZ in doubleArrayListData.Item2)
+                {
+                    CreateExcel(sortByY(selectCoordZ(fileDataList, filterZ)), inputFileName, filterZ);
+                }
+                //CreateExcel(sortByY(selectCoordZ(fileDataList)), inputFileName);
 
             }
         }
         
-        static List<List<double>> FileDoubleArrayList(string fileName)
+        //static Tuple<List<List<double>>, List<double>> FileDoubleArrayList(string fileName)
+        static (List<List<double>>, List<double>) FileDoubleArrayList(string fileName)
         {
             var lLdoubleArray = new List<List<double>>();
+            var listFilterZ = new List<double>();
             var lines = File.ReadAllLines(fileName);
             for (int i = 0; i < lines.Length; i++)
             {
@@ -62,9 +66,11 @@ namespace DataPreparationToExcel
                     resString.Add(Math.Round(double.Parse(linPer, CultureInfo.InvariantCulture), 2));
                 }
                 lLdoubleArray.Add(resString);
+                listFilterZ.Add(resString[2]);
             }
+            listFilterZ.Distinct();
             //consoleWriteCheck(lLdoubleArray);
-            return lLdoubleArray;
+            return (lLdoubleArray, listFilterZ);
         }
 
         static List<List<double>> selectCoordZ(List<List<double>> arraySelectZ, double zCoord = 0.0)
@@ -90,7 +96,7 @@ namespace DataPreparationToExcel
         static void CreateExcel(List<List<double>> inputArray, string fileNames, double axisCoordinateData = 0.0)
         {
             //string parth = $"D:\\test\\" + fileNames + $" dist {axisCoordinateData.ToString()}.xlsx";
-            string parth = fileNames + $" dist {axisCoordinateData.ToString()}.xlsx";
+            string parth = fileNames.Substring(0, fileNames.LastIndexOf('.')) + $" dist {axisCoordinateData.ToString()}.xlsx";
             using (var stream = new FileStream(parth, FileMode.Create, FileAccess.ReadWrite))
             {
                 var wb = new XSSFWorkbook();
