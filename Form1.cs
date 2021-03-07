@@ -47,7 +47,8 @@ namespace DataPreparationToExcel
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Converter.consoleWriteCheck(Converter.list);
+            //Converter.consoleWriteCheck(Converter.list);
+            Converter.createExcel(Converter.list);
         }
     }
 }
