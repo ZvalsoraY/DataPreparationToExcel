@@ -9,6 +9,8 @@ using System.IO;
 using System.Linq;
 using NPOI.SS.UserModel.Charts;
 
+//System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+
 namespace DataPreparationToExcel
 {
     static class Converter
@@ -153,7 +155,9 @@ namespace DataPreparationToExcel
                     var dCounter = 0;
                     foreach (var d in rowData)
                     {
-                        rowD.CreateCell(dCounter++, CellType.Numeric).SetCellValue(Double.Parse(d.ToString().Replace(@".", @",")));
+                        //rowD.CreateCell(dCounter++, CellType.Numeric).SetCellValue(Double.Parse(d.ToString().Replace(@".", @",")));
+                        //CultureInfo.InvariantCulture
+                        rowD.CreateCell(dCounter++, CellType.Numeric).SetCellValue(d);
                     }
                 }
                 wb.Write(stream);
