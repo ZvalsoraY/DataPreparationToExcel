@@ -9,35 +9,55 @@ using System.IO;
 using System.Linq;
 using NPOI.SS.UserModel.Charts;
 
+//System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+
 namespace DataPreparationToExcel
 {
-    static class Converter
+    public static class ToExcelConverter
     {
+        //string fileName = $"20tfiEMAT_20_ver_st3_WT10_sens3p5";
         static public List<string> list = new List<string>();
-        
-        static void createExcelFile(string fileName) 
+
+        public static void consoleWriteCheck(List<string> list)
         {
-            var listData = FileDoubleArrayList(fileName);
-            var distanceDistinct = listData.Select(s => s[2]).Distinct().OrderBy(u => u);
-            foreach (var dist in distanceDistinct) 
+            foreach (var s in list)
+                Console.Write(" " + s);
+            //Console.Write(s);
+            Console.WriteLine();
+        }
+        
+        static void consoleWriteCheck(List<List<double>> writingArray)
+        {
+            foreach (var item in writingArray)
             {
-                var massExcel = listData.Where(u => (Math.Abs(u[2] - dist) <= 0.01)).OrderBy(u => u[1]).ToList();
-                generateExcel(massExcel, fileName, dist);
+                foreach (var s in item)
+                    Console.Write(" " + s);
+                //Console.Write(s);
+                Console.WriteLine();
             }
         }
 
-        static public void createExcelForListFiles(List<string> list)
-        {
-            foreach(var inputFileName in list)
-            {
-                createExcelFile(inputFileName);                
-            }
-        }
+        //public static void createExcel(List<string> list)
+        //{
+        //    foreach(var inputFileName in list)
+        //    {
+                
+        //        var doubleArrayListData = FileDoubleArrayList(inputFileName);
+        //        List<List<double>> fileDataList = doubleArrayListData.Item1;
+        //        foreach(var filterZ in doubleArrayListData.Item2)
+        //        {
+        //            CreateExcel(sortByY(selectCoordZ(fileDataList, filterZ)), inputFileName, filterZ);
+        //        }
+        //        //CreateExcel(sortByY(selectCoordZ(fileDataList)), inputFileName);
 
-        
-        static List<List<double>> FileDoubleArrayList(string fileName)
+        //    }
+        //}
+
+        //static Tuple<List<List<double>>, List<double>> FileDoubleArrayList(string fileName)
+        static (List<List<double>>, List<double>) FileDoubleArrayList(string fileName)
         {
             var lLdoubleArray = new List<List<double>>();
+            var listFilterZ = new List<double>();
             var lines = File.ReadAllLines(fileName);
             for (int i = 0; i < lines.Length; i++)
             {
@@ -48,12 +68,67 @@ namespace DataPreparationToExcel
                 {
                     resString.Add(Math.Round(double.Parse(linPer, CultureInfo.InvariantCulture), 2));
                 }
-                lLdoubleArray.Add(resString);               
+                lLdoubleArray.Add(resString);
+                listFilterZ.Add(resString[2]);
             }
-            return lLdoubleArray;
+            listFilterZ.Distinct();
+            //consoleWriteCheck(lLdoubleArray);
+            return (lLdoubleArray, listFilterZ);
         }
 
-        static void generateExcel(List<List<double>> inputArray, string fileNames, double axisCoordinateData = 0.0)
+        static List<List<double>> selectCoordZ(List<List<double>> arraySelectZ, double zCoord = 0.0)
+        {
+            var zArray = new List<List<double>>();
+            zArray.Clear();
+            foreach (var tag in arraySelectZ)
+            {
+                if (Math.Abs(tag[2] - zCoord) <= 0.01) zArray.Add(tag);
+            }
+            //consoleWriteCheck(zArray);
+            return zArray;
+        }
+
+        static List<List<double>> sortByY(List<List<double>> arraySortY)
+        {
+            var arrayByY = new List<List<double>>();
+            arrayByY = arraySortY.OrderBy(l => l[1]).ToList();
+            //consoleWriteCheck(resArray);
+            return arrayByY;
+        }
+
+        static void dodo(string fileName)
+        {
+            //var lLdoubleArray = new List<List<double>>();
+            //var listFilterZ = new List<double>();
+            //var lines = File.ReadAllLines(fileName);
+            //for (int i = 0; i < lines.Length; i++)
+            //{
+            //    var resString = new List<double>();
+
+            //    string[] stringArray = lines[i].Split(new[] { ' ', '!' }, StringSplitOptions.RemoveEmptyEntries).ToArray();
+            //    foreach (var linPer in stringArray)
+            //    {
+            //        resString.Add(Math.Round(double.Parse(linPer, CultureInfo.InvariantCulture), 2));
+            //    }
+            //    lLdoubleArray.Add(resString);
+            //    listFilterZ.Add(resString[2]);
+            //}
+            //listFilterZ.Distinct();
+
+            //var dataInput = File.ReadAllLines(fileName).Where(f => f.Split(new[] { ' ', '!' }, StringSplitOptions.RemoveEmptyEntries).ToArray());
+
+            var dataInput = File.ReadAllLines(fileName).Where(Math.Round(double.Parse(f, CultureInfo.InvariantCulture), 2) => f.Split(new[] { ' ', '!' }, StringSplitOptions.RemoveEmptyEntries).ToArray());
+
+            //var dataInput = from user in File.ReadAllLines(fileName())
+            //                from lang in user.Languages
+            //                where user.Age < 28
+            //                where lang == "английский"
+            //                select user;
+        }
+            
+
+
+        static void CreateExcel(List<List<double>> inputArray, string fileNames, double axisCoordinateData = 0.0)
         {
             //string parth = $"D:\\test\\" + fileNames + $" dist {axisCoordinateData.ToString()}.xlsx";
             string parth = fileNames.Substring(0, fileNames.LastIndexOf('.')) + $" dist {axisCoordinateData.ToString()}.xlsx";

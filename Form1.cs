@@ -39,7 +39,7 @@ namespace DataPreparationToExcel
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Converter.createExcel(Converter.list);
+            Converter.createExcelForListFiles(Converter.list);
             MessageBox.Show("Done");
         }
     }
