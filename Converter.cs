@@ -37,19 +37,12 @@ namespace DataPreparationToExcel
         
         static List<List<double>> FileDoubleArrayList(string fileName)
         {
+            var stringArray = File.ReadAllLines(fileName).Select(x => x.Split(new[] { ' ', '!' }, StringSplitOptions.RemoveEmptyEntries));
             var lLdoubleArray = new List<List<double>>();
-            var lines = File.ReadAllLines(fileName);
-            for (int i = 0; i < lines.Length; i++)
+            foreach (var linPer in stringArray)
             {
-                var resString = new List<double>();
-
-                string[] stringArray = lines[i].Split(new[] { ' ', '!' }, StringSplitOptions.RemoveEmptyEntries).ToArray();
-                foreach (var linPer in stringArray)
-                {
-                    resString.Add(Math.Round(double.Parse(linPer, CultureInfo.InvariantCulture), 2));
-                }
-                lLdoubleArray.Add(resString);               
-            }
+                lLdoubleArray.Add(linPer.Select(x => Math.Round(double.Parse(x, CultureInfo.InvariantCulture), 2)).ToList());
+            }           
             return lLdoubleArray;
         }
 
