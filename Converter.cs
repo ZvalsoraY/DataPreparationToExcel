@@ -13,40 +13,33 @@ namespace DataPreparationToExcel
 {
     static class Converter
     {
-        static public List<string> list = new List<string>();
-        
-        static void createExcelFile(string fileName) 
+        public static List<string> list = new List<string>();
+        public static void createExcelFile(string fileName)
         {
             var listData = FileDoubleArrayList(fileName);
-            var distanceDistinct = listData.Select(s => s[2]).Distinct().OrderBy(u => u);
-            foreach (var dist in distanceDistinct) 
+            var distanceDistinct = listData.Select(s => s.ElementAt(2)).Distinct().OrderBy(u => u);
+            foreach (var dist in distanceDistinct)
             {
-                var massExcel = listData.Where(u => (Math.Abs(u[2] - dist) <= 0.01)).OrderBy(u => u[1]).ToList();
+                var massExcel = listData.Where(u => (Math.Abs(u.ElementAt(2) - dist) <= 0.01));
                 generateExcel(massExcel, fileName, dist);
             }
         }
-
-        static public void createExcelForListFiles(List<string> list)
+        public static void createExcelForListFiles(List<string> list)
         {
             foreach(var inputFileName in list)
             {
                 createExcelFile(inputFileName);                
             }
         }
-
-        
-        static List<List<double>> FileDoubleArrayList(string fileName)
+        public static IEnumerable<IEnumerable<double>> FileDoubleArrayList(string filePath)
         {
-            var stringArray = File.ReadAllLines(fileName).Select(x => x.Split(new[] { ' ', '!' }, StringSplitOptions.RemoveEmptyEntries));
-            var lLdoubleArray = new List<List<double>>();
-            foreach (var linPer in stringArray)
-            {
-                lLdoubleArray.Add(linPer.Select(x => Math.Round(double.Parse(x, CultureInfo.InvariantCulture), 2)).ToList());
-            }           
-            return lLdoubleArray;
+            var lines = File.ReadLines(filePath);
+            return lines.Select(line =>
+              line.Split(new[] { ' ', '!' }, StringSplitOptions.RemoveEmptyEntries).Select(s =>
+                  double.Parse(s, NumberStyles.Any, CultureInfo.InvariantCulture))).OrderBy(u => u.ElementAt(1));
         }
-
-        static void generateExcel(List<List<double>> inputArray, string fileNames, double axisCoordinateData = 0.0)
+        
+        static public void generateExcel(IEnumerable<IEnumerable<double>> inputArray, string fileNames, double axisCoordinateData = 0.0)
         {
             //string parth = $"D:\\test\\" + fileNames + $" dist {axisCoordinateData.ToString()}.xlsx";
             string parth = fileNames.Substring(0, fileNames.LastIndexOf('.')) + $" dist {axisCoordinateData.ToString()}.xlsx";
@@ -76,7 +69,8 @@ namespace DataPreparationToExcel
 
                 var chartData =
                         chart.ChartDataFactory.CreateLineChartData<double, double>();
-                var lenCellRange = inputArray.Count + 1;
+                //var lenCellRange = inputArray.Count + 1;
+                var lenCellRange = inputArray.Count() + 1;
                 IChartDataSource<double> xs = DataSources.FromNumericCellRange(sheet, CellRangeAddress.ValueOf($"B2:B{lenCellRange}"));
                 IChartDataSource<double> ys = DataSources.FromNumericCellRange(sheet, CellRangeAddress.ValueOf($"G2:G{lenCellRange}"));
                 //IChartDataSource<double> ys = DataSources.FromNumericCellRange(sheet, CellRangeAddress.ValueOf("G2:G20"));
