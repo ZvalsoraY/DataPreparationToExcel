@@ -17,13 +17,19 @@ namespace DataPreparationToExcel
         public static void createExcelFile(string fileName)
         {
             var listData = FileDoubleArrayList(fileName);
-            var distanceDistinct = listData.Select(s => s.ElementAt(2)).Distinct().OrderBy(u => u);
-            foreach (var dist in distanceDistinct)
+            var query = listData.GroupBy(
+            u => Math.Floor(u.ElementAt(2)),
+            u => u);
+                     
+            foreach (var result in query)
             {
-                var massExcel = listData.Where(u => (Math.Abs(u.ElementAt(2) - dist) <= 0.01));
-                generateExcel(massExcel, fileName, dist);
+                generateExcel(result, fileName, result.ElementAt(0).ElementAt(2));
             }
         }
+
+        /// <summary>
+        /// This class does something.
+        /// </summary>
         public static void createExcelForListFiles(List<string> list)
         {
             foreach(var inputFileName in list)
@@ -34,12 +40,16 @@ namespace DataPreparationToExcel
         public static IEnumerable<IEnumerable<double>> FileDoubleArrayList(string filePath)
         {
             var lines = File.ReadLines(filePath);
+            //return lines.Select(line =>
+            //  line.Split(new[] { ' ', '!' }, StringSplitOptions.RemoveEmptyEntries).Select(s =>
+            //      double.Parse(s, NumberStyles.Any, CultureInfo.InvariantCulture))).OrderBy(u => u.ElementAt(1));
             return lines.Select(line =>
-              line.Split(new[] { ' ', '!' }, StringSplitOptions.RemoveEmptyEntries).Select(s =>
-                  double.Parse(s, NumberStyles.Any, CultureInfo.InvariantCulture))).OrderBy(u => u.ElementAt(1));
+              line.Split(new[] { ' ', '!' }, StringSplitOptions.RemoveEmptyEntries).Select(s => 
+              Math.Round(double.Parse(s, NumberStyles.Any, CultureInfo.InvariantCulture), 2, MidpointRounding.AwayFromZero)
+                  )).OrderBy(u => u.ElementAt(1));
         }
-        
-        static public void generateExcel(IEnumerable<IEnumerable<double>> inputArray, string fileNames, double axisCoordinateData = 0.0)
+
+        public static void generateExcel(IEnumerable<IEnumerable<double>> inputArray, string fileNames, double axisCoordinateData = 0.0)
         {
             //string parth = $"D:\\test\\" + fileNames + $" dist {axisCoordinateData.ToString()}.xlsx";
             string parth = fileNames.Substring(0, fileNames.LastIndexOf('.')) + $" dist {axisCoordinateData.ToString()}.xlsx";
