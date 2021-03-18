@@ -11,32 +11,42 @@ using NPOI.SS.UserModel.Charts;
 
 namespace DataPreparationToExcel
 {
-    static class Converter
+    /// <summary>
+    /// This class provides conversion of the allocated string array to Excel.
+    /// </summary>
+    public static class Converter
     {
         public static List<string> list = new List<string>();
+        /// <summary>
+        /// This method invokes sorting and array transformation
+        /// for each file in the selected list.
+        /// </summary>
+        public static void createExcelForListFiles(List<string> list)
+        {
+            foreach (var inputFileName in list)
+            {
+                createExcelFile(inputFileName);
+            }
+        }
+        /// <summary>
+        /// This method groups the values along the z-axis
+        /// and passes the data in groups for conversion to Excel.
+        /// </summary>
         public static void createExcelFile(string fileName)
         {
             var listData = FileDoubleArrayList(fileName);
             var query = listData.GroupBy(
             u => Math.Floor(u.ElementAt(2)),
             u => u);
-                     
             foreach (var result in query)
             {
                 generateExcel(result, fileName, result.ElementAt(0).ElementAt(2));
             }
         }
-
         /// <summary>
-        /// This class does something.
+        /// This method create IEnumerable IEnumerable double
+        /// from file.
         /// </summary>
-        public static void createExcelForListFiles(List<string> list)
-        {
-            foreach(var inputFileName in list)
-            {
-                createExcelFile(inputFileName);                
-            }
-        }
         public static IEnumerable<IEnumerable<double>> FileDoubleArrayList(string filePath)
         {
             var lines = File.ReadLines(filePath);
@@ -48,7 +58,9 @@ namespace DataPreparationToExcel
               Math.Round(double.Parse(s, NumberStyles.Any, CultureInfo.InvariantCulture), 2, MidpointRounding.AwayFromZero)
                   )).OrderBy(u => u.ElementAt(1));
         }
-
+        /// <summary>
+        /// This method create Excel file with chart.
+        /// </summary>
         public static void generateExcel(IEnumerable<IEnumerable<double>> inputArray, string fileNames, double axisCoordinateData = 0.0)
         {
             //string parth = $"D:\\test\\" + fileNames + $" dist {axisCoordinateData.ToString()}.xlsx";
