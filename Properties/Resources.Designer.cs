@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DataPreparationToExcel.Properties
+namespace DataPreparationToExcelNS.Properties
 {
 
 

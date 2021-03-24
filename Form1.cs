@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace DataPreparationToExcel
+namespace DataPreparationToExcelNS
 {
     public partial class Form1 : Form
     {
@@ -33,13 +33,13 @@ namespace DataPreparationToExcel
             string[] files_names = dlg.FileNames;
             listBox1.Items.Clear();
             listBox1.Items.AddRange(files_names);
-            Converter.list.Clear();
-            Converter.list.AddRange(files_names);
+            ConverterToExcel.list.Clear();
+            ConverterToExcel.list.AddRange(files_names);
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Converter.createExcelForListFiles(Converter.list);
+            ConverterToExcel.createExcelForListFiles(ConverterToExcel.list);
             MessageBox.Show("Done");
         }
     }

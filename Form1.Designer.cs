@@ -1,4 +1,4 @@
-﻿namespace DataPreparationToExcel
+﻿namespace DataPreparationToExcelNS
 {
     partial class Form1
     {

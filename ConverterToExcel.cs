@@ -9,12 +9,12 @@ using System.IO;
 using System.Linq;
 using NPOI.SS.UserModel.Charts;
 
-namespace DataPreparationToExcel
+namespace DataPreparationToExcelNS
 {
     /// <summary>
     /// This class provides conversion of the allocated string array to Excel.
     /// </summary>
-    public static class Converter
+    public static class ConverterToExcel
     {
         public static List<string> list = new List<string>();
         /// <summary>
