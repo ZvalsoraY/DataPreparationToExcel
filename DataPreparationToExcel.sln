@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataPreparationToExcel", "DataPreparationToExcel.csproj", "{0EBB68FC-1B78-46CB-9763-212CC421F6F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataPreparationToExcel.test", "DataPreparationToExcel.test\DataPreparationToExcel.test.csproj", "{9455E38F-E71B-4BE7-AC7C-9BBC95A4DCCF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataPreparationToExcel.test", "DataPreparationToExcel.test\DataPreparationToExcel.test.csproj", "{9455E38F-E71B-4BE7-AC7C-9BBC95A4DCCF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,12 +15,12 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{0EBB68FC-1B78-46CB-9763-212CC421F6F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0EBB68FC-1B78-46CB-9763-212CC421F6F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0EBB68FC-1B78-46CB-9763-212CC421F6F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0EBB68FC-1B78-46CB-9763-212CC421F6F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EBB68FC-1B78-46CB-9763-212CC421F6F0}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EBB68FC-1B78-46CB-9763-212CC421F6F0}.Release|Any CPU.Build.0 = Debug|Any CPU
 		{9455E38F-E71B-4BE7-AC7C-9BBC95A4DCCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9455E38F-E71B-4BE7-AC7C-9BBC95A4DCCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9455E38F-E71B-4BE7-AC7C-9BBC95A4DCCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9455E38F-E71B-4BE7-AC7C-9BBC95A4DCCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9455E38F-E71B-4BE7-AC7C-9BBC95A4DCCF}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{9455E38F-E71B-4BE7-AC7C-9BBC95A4DCCF}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

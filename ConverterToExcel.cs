@@ -25,7 +25,8 @@ namespace DataPreparationToExcelNS
         {
             foreach (var inputFileName in list)
             {
-                createExcelFile(inputFileName);
+                //createExcelFile(inputFileName);
+                createExcelFileYaxis(inputFileName);
             }
         }
         /// <summary>
@@ -40,14 +41,29 @@ namespace DataPreparationToExcelNS
             u => u);
             foreach (var result in query)
             {
-                generateExcel(result, fileName, result.ElementAt(0).ElementAt(2));
+                generateExcel(result, fileName, $"B2:B", result.ElementAt(0).ElementAt(2));
+            }
+        }
+        /// <summary>
+        /// This method groups the values along the y-axis
+        /// and passes the data in groups for conversion to Excel.
+        /// </summary>
+        public static void createExcelFileYaxis(string fileName)
+        {
+            var listData = FileDoubleArrayList(fileName, 2);
+            var query = listData.GroupBy(
+            u => Math.Floor(u.ElementAt(1)),
+            u => u);
+            foreach (var result in query)
+            {
+                generateExcel(result, fileName.Substring(0, fileName.LastIndexOf('.')) + "_Y_axis", $"C2:C", result.ElementAt(0).ElementAt(1));
             }
         }
         /// <summary>
         /// This method create IEnumerable IEnumerable double
         /// from file.
         /// </summary>
-        public static IEnumerable<IEnumerable<double>> FileDoubleArrayList(string filePath)
+        public static IEnumerable<IEnumerable<double>> FileDoubleArrayList(string filePath, int parCol = 1)
         {
             var lines = File.ReadLines(filePath);
             //return lines.Select(line =>
@@ -56,15 +72,16 @@ namespace DataPreparationToExcelNS
             return lines.Select(line =>
               line.Split(new[] { ' ', '!' }, StringSplitOptions.RemoveEmptyEntries).Select(s => 
               Math.Round(double.Parse(s, NumberStyles.Any, CultureInfo.InvariantCulture), 2, MidpointRounding.AwayFromZero)
-                  )).OrderBy(u => u.ElementAt(1));
+                  )).OrderBy(u => u.ElementAt(parCol));
         }
         /// <summary>
         /// This method create Excel file with chart.
         /// </summary>
-        public static void generateExcel(IEnumerable<IEnumerable<double>> inputArray, string fileNames, double axisCoordinateData = 0.0)
+        public static void generateExcel(IEnumerable<IEnumerable<double>> inputArray, string fileNames, string columnSel, double axisCoordinateData = 0.0)
         {
             //string parth = $"D:\\test\\" + fileNames + $" dist {axisCoordinateData.ToString()}.xlsx";
-            string parth = fileNames.Substring(0, fileNames.LastIndexOf('.')) + $" dist {axisCoordinateData.ToString()}.xlsx";
+            //string parth = fileNames.Substring(0, fileNames.LastIndexOf('.')) + $" dist {axisCoordinateData.ToString()}.xlsx";
+            string parth = fileNames + $" dist {axisCoordinateData.ToString()}.xlsx";
             using (var stream = new FileStream(parth, FileMode.Create, FileAccess.ReadWrite))
             {
                 var wb = new XSSFWorkbook();
@@ -93,7 +110,9 @@ namespace DataPreparationToExcelNS
                         chart.ChartDataFactory.CreateLineChartData<double, double>();
                 //var lenCellRange = inputArray.Count + 1;
                 var lenCellRange = inputArray.Count() + 1;
-                IChartDataSource<double> xs = DataSources.FromNumericCellRange(sheet, CellRangeAddress.ValueOf($"B2:B{lenCellRange}"));
+                //var columnLenCellRange = columnSel + $"{lenCellRange}";
+                //IChartDataSource<double> xs = DataSources.FromNumericCellRange(sheet, CellRangeAddress.ValueOf($"B2:B{lenCellRange}"));
+                IChartDataSource<double> xs = DataSources.FromNumericCellRange(sheet, CellRangeAddress.ValueOf(columnSel + $"{lenCellRange}"));
                 IChartDataSource<double> ys = DataSources.FromNumericCellRange(sheet, CellRangeAddress.ValueOf($"G2:G{lenCellRange}"));
                 //IChartDataSource<double> ys = DataSources.FromNumericCellRange(sheet, CellRangeAddress.ValueOf("G2:G20"));
 
