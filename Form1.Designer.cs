@@ -32,6 +32,9 @@
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
+            this.labelUnits = new System.Windows.Forms.Label();
+            this.cbUnits = new DevExpress.XtraEditors.ComboBoxEdit();
+            ((System.ComponentModel.ISupportInitialize)(this.cbUnits.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
@@ -66,18 +69,48 @@
             this.listBox1.Size = new System.Drawing.Size(766, 356);
             this.listBox1.TabIndex = 3;
             // 
+            // labelUnits
+            // 
+            this.labelUnits.AutoSize = true;
+            this.labelUnits.Font = new System.Drawing.Font("Microsoft Sans Serif", 28.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelUnits.Location = new System.Drawing.Point(29, 478);
+            this.labelUnits.Name = "labelUnits";
+            this.labelUnits.Size = new System.Drawing.Size(277, 55);
+            this.labelUnits.TabIndex = 4;
+            this.labelUnits.Text = "Model Units";
+            // 
+            // cbUnits
+            // 
+            this.cbUnits.EditValue = "mm";
+            this.cbUnits.Location = new System.Drawing.Point(312, 476);
+            this.cbUnits.Name = "cbUnits";
+            this.cbUnits.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 25.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cbUnits.Properties.Appearance.Options.UseFont = true;
+            this.cbUnits.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cbUnits.Properties.Items.AddRange(new object[] {
+            "mm",
+            "m"});
+            this.cbUnits.Size = new System.Drawing.Size(108, 58);
+            this.cbUnits.TabIndex = 5;
+            this.cbUnits.SelectedIndexChanged += new System.EventHandler(this.cbUnits_SelectedIndexChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 503);
+            this.ClientSize = new System.Drawing.Size(804, 551);
+            this.Controls.Add(this.cbUnits);
+            this.Controls.Add(this.labelUnits);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "Data to Excel";
+            ((System.ComponentModel.ISupportInitialize)(this.cbUnits.Properties)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -86,6 +119,8 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.Label labelUnits;
+        private DevExpress.XtraEditors.ComboBoxEdit cbUnits;
     }
 }
 
