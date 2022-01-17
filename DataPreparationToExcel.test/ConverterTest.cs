@@ -21,21 +21,9 @@ namespace DataPreparationToExcelNS.test
               new double[] { 2.3, 3.4, 4.5, 5.6, 6.7, 7.8, 8.9 },
               new double[] { 3.4, 4.5, 5.6, 6.7, 7.8, 8.9, 9.9 }};
 
-            var result = ConverterToExcel.FileDoubleArrayList("inputFileTest.txt", "mm");
+            var result = ConverterToExcel.FileDoubleArrayList("inputFileTest.txt");
             Assert.That(expectedRes, Is.EqualTo(result).AsCollection.Within(1.0E-7));
             
-        }
-        [TestMethod]
-        public void FileDoubleArrayListTestMet()
-        {
-            IEnumerable<IEnumerable> expectedRes = new IEnumerable[]
-            { new double[] { 1.2, 2.3, 3.4, 4.5, 5.6, 6.7, 7.8 },
-              new double[] { 2.3, 3.4, 4.5, 5.6, 6.7, 7.8, 8.9 },
-              new double[] { 3.4, 4.5, 5.6, 6.7, 7.8, 8.9, 9.9 }};
-
-            var result = ConverterToExcel.FileDoubleArrayList("inputFileTestMeters.txt","m");
-            Assert.That(expectedRes, Is.EqualTo(result).AsCollection.Within(1.0E-7));
-
         }
     }
 }

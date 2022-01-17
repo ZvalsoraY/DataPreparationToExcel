@@ -21,21 +21,21 @@ namespace DataPreparationToExcelNS
         /// This method invokes sorting and array transformation
         /// for each file in the selected list.
         /// </summary>
-        public static void createExcelForListFiles(List<string> list,string mUnit)
+        public static void createExcelForListFiles(List<string> list)
         {
             foreach (var inputFileName in list)
             {
                 //createExcelFile(inputFileName);
-                createExcelFileYaxis(inputFileName, mUnit);
+                createExcelFileYaxis(inputFileName);
             }
         }
         /// <summary>
         /// This method groups the values along the z-axis
         /// and passes the data in groups for conversion to Excel.
         /// </summary>
-        public static void createExcelFile(string fileName, string mUnit)
+        public static void createExcelFile(string fileName)
         {
-            var listData = FileDoubleArrayList(fileName, mUnit);
+            var listData = FileDoubleArrayList(fileName);
             var query = listData.GroupBy(
             u => Math.Floor(u.ElementAt(2)),
             u => u);
@@ -48,38 +48,24 @@ namespace DataPreparationToExcelNS
         /// This method groups the values along the y-axis
         /// and passes the data in groups for conversion to Excel.
         /// </summary>
-        public static void createExcelFileYaxis(string fileName, string mUnit)
+        public static void createExcelFileYaxis(string fileName)
         {
-            var listData = FileDoubleArrayList(fileName, mUnit, 2);
+            var listData = FileDoubleArrayList(fileName, 2);
             var query = listData.GroupBy(
-                u => Math.Floor(u.ElementAt(1)),
-                u => u);
-                foreach (var result in query)
-                {
-                    generateExcel(result, fileName.Substring(0, fileName.LastIndexOf('.')) + "_Y_axis", $"C2:C", result.ElementAt(0).ElementAt(1));
-                }            
+            u => Math.Floor(u.ElementAt(1)),
+            u => u);
+            foreach (var result in query)
+            {
+                generateExcel(result, fileName.Substring(0, fileName.LastIndexOf('.')) + "_Y_axis", $"C2:C", result.ElementAt(0).ElementAt(1));
+            }
         }
         /// <summary>
         /// This method create IEnumerable IEnumerable double
         /// from file.
         /// </summary>
-        public static IEnumerable<IEnumerable<double>> FileDoubleArrayList(string filePath, string mUnit, int parCol = 1)
+        public static IEnumerable<IEnumerable<double>> FileDoubleArrayList(string filePath, int parCol = 1)
         {
             var lines = File.ReadLines(filePath);
-            if (mUnit == "m")
-            {
-                return lines.Select(line =>
-              line.Split(new[] { ' ', '!' }, StringSplitOptions.RemoveEmptyEntries)
-              .Select((s, index) => {
-                  if (index < 3)
-                      return Math.Round(double.Parse(s, NumberStyles.Any, CultureInfo.InvariantCulture) * 1000, 2, MidpointRounding.AwayFromZero);
-                  return Math.Round(double.Parse(s, NumberStyles.Any, CultureInfo.InvariantCulture), 2, MidpointRounding.AwayFromZero);
-              }))
-                  .OrderBy(u => u.ElementAt(parCol));
-            }
-            else
-            {       
-            //var lines = File.ReadLines(filePath);
             //return lines.Select(line =>
             //  line.Split(new[] { ' ', '!' }, StringSplitOptions.RemoveEmptyEntries).Select(s =>
             //      double.Parse(s, NumberStyles.Any, CultureInfo.InvariantCulture))).OrderBy(u => u.ElementAt(1));
@@ -87,7 +73,6 @@ namespace DataPreparationToExcelNS
               line.Split(new[] { ' ', '!' }, StringSplitOptions.RemoveEmptyEntries).Select(s => 
               Math.Round(double.Parse(s, NumberStyles.Any, CultureInfo.InvariantCulture), 2, MidpointRounding.AwayFromZero)
                   )).OrderBy(u => u.ElementAt(parCol));
-            }
         }
         /// <summary>
         /// This method create Excel file with chart.
