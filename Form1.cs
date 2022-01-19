@@ -12,6 +12,8 @@ namespace DataPreparationToExcelNS
 {
     public partial class Form1 : Form
     {
+        static public string mUnits = "mm";
+        
         public Form1()
         {
             InitializeComponent();
@@ -39,8 +41,20 @@ namespace DataPreparationToExcelNS
 
         private void button2_Click(object sender, EventArgs e)
         {
-            ConverterToExcel.createExcelForListFiles(ConverterToExcel.list);
+            mUnits = cbUnits.Text;
+            ConverterToExcel.createExcelForListFiles(ConverterToExcel.list, mUnits);
             MessageBox.Show("Done");
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //InitializeComponent();
+            //cbUnits.Text = "mm";
         }
     }
 }
