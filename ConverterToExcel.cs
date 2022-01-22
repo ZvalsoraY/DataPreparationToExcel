@@ -25,7 +25,7 @@ namespace DataPreparationToExcelNS
         {
             foreach (var inputFileName in list)
             {
-                //createExcelFile(inputFileName);
+                createExcelFile(inputFileName, mUnit);
                 createExcelFileYaxis(inputFileName, mUnit);
             }
         }
@@ -41,7 +41,8 @@ namespace DataPreparationToExcelNS
             u => u);
             foreach (var result in query)
             {
-                generateExcel(result, fileName, $"B2:B", result.ElementAt(0).ElementAt(2));
+                //generateExcel(result, fileName, $"B2:B", result.ElementAt(0).ElementAt(2));
+                generateExcel(result, fileName.Substring(0, fileName.LastIndexOf('.')) + "_Z_axis", $"B2:B", result.ElementAt(0).ElementAt(2));
             }
         }
         /// <summary>
